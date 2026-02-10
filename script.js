@@ -41,6 +41,30 @@ function getSizes() {
 }
 
 // --------------------
+// createStars
+// --------------------
+function createStars(numStars = 10) {
+  // Remove old stars
+  document.querySelectorAll('.star').forEach(star => star.remove());
+
+  const { gameW, gameH, offsetX, offsetY } = getSizes();
+
+  for (let i = 0; i < numStars; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+
+    // Random position inside inner-window
+    const left = offsetX + Math.random() * gameW;
+    const top = offsetY + Math.random() * gameH;
+
+    star.style.left = left + 'px';
+    star.style.top = top + 'px';
+
+    game.appendChild(star);
+  }
+}
+
+// --------------------
 // Move Alien Randomly Inside Game Container
 // --------------------
 function moveAlien() {
@@ -51,6 +75,7 @@ function moveAlien() {
 
   if (lives <= 0) {
     alien.classList.add('hidden');
+    createStars(0);
     msg.textContent = 'You lost the game. Start over!';
     clearTimeout(alienInterval);
     return;
@@ -77,6 +102,8 @@ function moveAlien() {
 
   // Next move
   alienInterval = setTimeout(moveAlien, window.innerWidth < 600 ? 2500 : 2000);
+  // Add random stars each round
+  createStars(25); // 5 random stars
 }
 
 // --------------------

@@ -26,7 +26,6 @@ h1 {
 
 .inner-window {
   position: absolute;
-  /* background-color: #101f37;  */
   top: 30px; /* margin from top */
   left: 30px; /* margin from left */
   right: 30px; /* margin from right */
@@ -55,6 +54,16 @@ h1 {
   align-items: center;
   position: absolute;
   cursor: pointer;
+}
+
+.star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.8;
+  pointer-events: none; /* so they don’t block clicks */
 }
 
 .btn {
