@@ -25,6 +25,13 @@ let lives;
 let alienInterval;
 let wasHit;
 
+function hitAlien() {
+  wasHit = true;
+  score++;
+  scoreEl.textContent = score;
+  alien.classList.add('hidden');
+}
+
 const init = function () {
   // Reset score
   score = 0;
@@ -69,12 +76,7 @@ const init = function () {
 
 init();
 
-alien.addEventListener('click', function () {
-  wasHit = true;
-
-  score++;
-  scoreEl.textContent = score;
-  alien.classList.add('hidden');
-});
+// alien.addEventListener('click', hitAlien);
+alien.addEventListener('pointerdown', hitAlien);
 
 btnNewGame.addEventListener('click', init);
