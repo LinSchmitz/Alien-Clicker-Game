@@ -73,11 +73,29 @@ function moveAlien() {
     livesEl.textContent = lives;
   }
 
+  // if (lives <= 0) {
+  //   alien.classList.add('hidden');
+  //   createStars(0);
+  //   msg.textContent = 'You lost the game. Start over!';
+  //   clearTimeout(alienInterval);
+  //   return;
+  // }
   if (lives <= 0) {
-    alien.classList.add('hidden');
-    createStars(0);
+    createStars(0); // remove stars
+    alien.classList.add('lost'); // trigger lost animation
     msg.textContent = 'You lost the game. Start over!';
     clearTimeout(alienInterval);
+
+    // Remove alien from screen after animation ends
+    alien.addEventListener(
+      'animationend',
+      () => {
+        alien.classList.remove('lost');
+        alien.classList.add('hidden');
+      },
+      { once: true },
+    );
+
     return;
   }
 
@@ -109,11 +127,34 @@ function moveAlien() {
 // --------------------
 // Alien Click Handler
 // --------------------
+// function hitAlien() {
+//   wasHit = true;
+//   score++;
+//   scoreEl.textContent = score;
+//   alien.classList.add('hidden');
+// }
 function hitAlien() {
   wasHit = true;
   score++;
   scoreEl.textContent = score;
-  alien.classList.add('hidden');
+
+  // Play explosion sound
+  const audio = new Audio('explosion.mp3'); // make sure file exists
+  audio.volume = 0.2; // small volume
+  audio.play();
+
+  // Trigger explosion animation
+  alien.classList.add('explode');
+
+  // Remove alien from screen after animation ends
+  alien.addEventListener(
+    'animationend',
+    () => {
+      alien.classList.remove('explode');
+      alien.classList.add('hidden');
+    },
+    { once: true },
+  );
 }
 
 // --------------------
