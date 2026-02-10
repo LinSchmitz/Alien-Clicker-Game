@@ -81,7 +81,7 @@ alien-clicker/
 
 ## 🌐 License
 
-This project is free to use for personal and educational purposes.
+This project is for personal use only. All rights reserved by the creator.
 
 ```
 
