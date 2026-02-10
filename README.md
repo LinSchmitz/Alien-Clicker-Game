@@ -1,4 +1,4 @@
-# 👾 Alien Clicker Game (JavaScript Practice)
+# 👽 Alien Clicker Game (JavaScript Practice)
 
 ## 🎯 Goal
 
