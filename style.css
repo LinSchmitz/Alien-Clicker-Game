@@ -27,19 +27,23 @@ h1 {
 }
 
 .game {
-  width: 600px;
-  height: 400px;
+  width: 90%;
+  max-width: 600px;
+  height: 60vw; /* responsive height relative to width */
+  max-height: 400px;
   background: #020617;
   border: 2px solid #38bdf8;
   margin: 0 auto 20px;
-  position: relative; /* IMPORTANT */
+  position: relative;
   overflow: hidden;
 }
 
 .alien {
-  width: 150px;
-  height: 150px;
-  font-size: 50px; /* control emoji size */
+  width: 80px; /* default for desktop */
+  height: 80px;
+  max-width: 25%; /* never more than 25% of game width */
+  max-height: 25%; /* keep square */
+  font-size: 4vw; /* scales with viewport width */
   display: flex;
   justify-content: center;
   align-items: center;
