@@ -17,13 +17,32 @@ const gameH = game.clientHeight;
 const alienW = alien.clientWidth;
 const alienH = alien.clientHeight;
 
-const maxTop = gameH - alienH;
-const maxLeft = gameW - alienW;
+// const maxTop = gameH - alienH;
+// const maxLeft = gameW - alienW;
 
-let score;
-let lives;
-let alienInterval;
-let wasHit;
+let score, lives, alienInterval, wasHit;
+
+// --------------------
+//  Update bounds dynamically
+// --------------------
+function updateBounds() {
+  const gameW = game.clientWidth;
+  const gameH = game.clientHeight;
+  const alienW = alien.clientWidth;
+  const alienH = alien.clientHeight;
+
+  return {
+    maxTop: gameH - alienH,
+    maxLeft: gameW - alienW,
+  };
+}
+
+// Listen to window resize
+window.addEventListener('resize', updateBounds);
+
+// --------------------
+//  Alien hit handler
+// --------------------
 
 function hitAlien() {
   wasHit = true;
@@ -31,6 +50,10 @@ function hitAlien() {
   scoreEl.textContent = score;
   alien.classList.add('hidden');
 }
+
+// --------------------
+//   Game initialization
+// --------------------
 
 const init = function () {
   // Reset score
@@ -46,15 +69,18 @@ const init = function () {
   // Stop previous game loop
   if (alienInterval) clearInterval(alienInterval);
 
+  // Adjust speed for mobile/desktop
+  const intervalTime = window.innerWidth < 600 ? 2500 : 2000;
+
   // Start moving alien every 2 seconds
   alienInterval = setInterval(() => {
-    // 1️⃣ Evaluate previous round
+    //   Evaluate previous round
     if (!wasHit) {
       lives--;
       livesEl.textContent = lives;
     }
 
-    // 2️⃣ Game over check
+    //   Game over check
     if (lives === 0) {
       clearInterval(alienInterval);
       alien.classList.add('hidden');
@@ -62,21 +88,26 @@ const init = function () {
       return;
     }
 
-    // 3️⃣ Start next round
+    //   Start next round
     wasHit = false;
 
+    const { maxTop, maxLeft } = updateBounds();
     const randomTop = Math.trunc(Math.random() * maxTop);
     const randomLeft = Math.trunc(Math.random() * maxLeft);
 
     alien.style.top = randomTop + 'px';
     alien.style.left = randomLeft + 'px';
     alien.classList.remove('hidden');
-  }, 2000);
+  }, intervalTime);
 };
 
-init();
-
-// alien.addEventListener('click', hitAlien);
+// --------------------
+//   Event listeners
+// --------------------
 alien.addEventListener('pointerdown', hitAlien);
-
 btnNewGame.addEventListener('click', init);
+
+// --------------------
+//  Start the game
+// --------------------
+init();
