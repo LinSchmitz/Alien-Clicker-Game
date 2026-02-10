@@ -1,49 +1,87 @@
 'use strict';
 
+// --------------------
+// DOM Elements
+// --------------------
 const alien = document.querySelector('.alien');
 const scoreEl = document.querySelector('#score');
 const livesEl = document.querySelector('#lives');
 const msg = document.querySelector('#msg');
-const btnNewGame = document.querySelector('.new-game');
-
+const btnNewGame = document.querySelector('.btn.new-game');
 const game = document.querySelector('.game');
 
-// const gameW = document.querySelector('.game').clientWidth;
-// const gameH = document.querySelector('.game').clientHeight;
-
-const gameW = game.clientWidth;
-const gameH = game.clientHeight;
-
-const alienW = alien.clientWidth;
-const alienH = alien.clientHeight;
-
-// const maxTop = gameH - alienH;
-// const maxLeft = gameW - alienW;
-
-let score, lives, alienInterval, wasHit;
+// --------------------
+// Game State
+// --------------------
+let score = 0;
+let lives = 3;
+let alienInterval;
+let wasHit = true;
 
 // --------------------
-//  Update bounds dynamically
+// Helper: Get Alien & Game Sizes
 // --------------------
-function updateBounds() {
-  const gameW = game.clientWidth;
-  const gameH = game.clientHeight;
-  const alienW = alien.clientWidth;
-  const alienH = alien.clientHeight;
+function getSizes() {
+  const alienW = alien.offsetWidth;
+  const alienH = alien.offsetHeight;
 
-  return {
-    maxTop: gameH - alienH,
-    maxLeft: gameW - alienW,
-  };
+  const inner = document.querySelector('.inner-window');
+  const innerRect = inner.getBoundingClientRect();
+  const gameRect = game.getBoundingClientRect();
+
+  // Inner window width/height relative to container
+  const gameW = inner.offsetWidth;
+  const gameH = inner.offsetHeight;
+
+  // Inner window top-left relative to game
+  const offsetX = inner.offsetLeft;
+  const offsetY = inner.offsetTop;
+
+  return { alienW, alienH, gameW, gameH, offsetX, offsetY };
 }
 
-// Listen to window resize
-window.addEventListener('resize', updateBounds);
+// --------------------
+// Move Alien Randomly Inside Game Container
+// --------------------
+function moveAlien() {
+  if (!wasHit) {
+    lives--;
+    livesEl.textContent = lives;
+  }
+
+  if (lives <= 0) {
+    alien.classList.add('hidden');
+    msg.textContent = 'You lost the game. Start over!';
+    clearTimeout(alienInterval);
+    return;
+  }
+
+  wasHit = false;
+
+  // Get sizes
+  const { alienW, alienH, gameW, gameH, offsetX, offsetY } = getSizes();
+
+  const marginX = alienW;
+  const marginY = alienH;
+
+  const maxLeft = gameW - alienW - marginX;
+  const maxTop = gameH - alienH - marginY;
+
+  const randomLeft = offsetX + marginX + Math.random() * maxLeft;
+  const randomTop = offsetY + marginY + Math.random() * maxTop;
+
+  alien.style.left = `${randomLeft}px`;
+  alien.style.top = `${randomTop}px`;
+
+  alien.classList.remove('hidden');
+
+  // Next move
+  alienInterval = setTimeout(moveAlien, window.innerWidth < 600 ? 2500 : 2000);
+}
 
 // --------------------
-//  Alien hit handler
+// Alien Click Handler
 // --------------------
-
 function hitAlien() {
   wasHit = true;
   score++;
@@ -52,62 +90,31 @@ function hitAlien() {
 }
 
 // --------------------
-//   Game initialization
+// Game Initialization
 // --------------------
-
-const init = function () {
-  // Reset score
+function init() {
   score = 0;
   lives = 3;
+  wasHit = true;
+
   scoreEl.textContent = score;
   livesEl.textContent = lives;
   msg.textContent = '';
 
-  // Make alien visible
   alien.classList.remove('hidden');
 
-  // Stop previous game loop
-  if (alienInterval) clearInterval(alienInterval);
+  if (alienInterval) clearTimeout(alienInterval);
 
-  // Adjust speed for mobile/desktop
-  const intervalTime = window.innerWidth < 600 ? 2500 : 2000;
-
-  // Start moving alien every 2 seconds
-  alienInterval = setInterval(() => {
-    //   Evaluate previous round
-    if (!wasHit) {
-      lives--;
-      livesEl.textContent = lives;
-    }
-
-    //   Game over check
-    if (lives === 0) {
-      clearInterval(alienInterval);
-      alien.classList.add('hidden');
-      msg.textContent = 'You lost the game. Start over!';
-      return;
-    }
-
-    //   Start next round
-    wasHit = false;
-
-    const { maxTop, maxLeft } = updateBounds();
-    const randomTop = Math.trunc(Math.random() * maxTop);
-    const randomLeft = Math.trunc(Math.random() * maxLeft);
-
-    alien.style.top = randomTop + 'px';
-    alien.style.left = randomLeft + 'px';
-    alien.classList.remove('hidden');
-  }, intervalTime);
-};
+  moveAlien();
+}
 
 // --------------------
-//   Event listeners
+// Event Listeners
 // --------------------
 alien.addEventListener('pointerdown', hitAlien);
 btnNewGame.addEventListener('click', init);
 
 // --------------------
-//  Start the game
+// Start Game
 // --------------------
 init();

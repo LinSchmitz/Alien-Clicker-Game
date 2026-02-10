@@ -1,5 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,15 +19,26 @@ h1 {
 .hud {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
   margin-bottom: 15px;
   font-size: 18px;
+}
+
+.inner-window {
+  position: absolute;
+  background-color: #101f37; /* different color */
+  top: 30px; /* margin from top */
+  left: 30px; /* margin from left */
+  right: 30px; /* margin from right */
+  bottom: 30px; /* margin from bottom */
+  border-radius: 8px;
+  pointer-events: none; /* so alien clicks still work */
 }
 
 .game {
   width: 90%;
   max-width: 600px;
-  height: 60vw; /* responsive height relative to width */
+  height: 70vh;
   max-height: 400px;
   background: #020617;
   border: 2px solid #38bdf8;
@@ -39,11 +48,8 @@ h1 {
 }
 
 .alien {
-  width: 80px; /* default for desktop */
-  height: 80px;
-  max-width: 25%; /* never more than 25% of game width */
-  max-height: 25%; /* keep square */
-  font-size: 4vw; /* scales with viewport width */
+  font-size: clamp(25px, 10vw, 40px);
+
   display: flex;
   justify-content: center;
   align-items: center;
