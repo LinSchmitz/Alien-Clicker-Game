@@ -4,7 +4,9 @@ Alien Clicker is a fun, browser-based clicking game where the player must click 
 
 ---
 
-1.png
+## 📸Preview
+
+![alt text](1.png)
 
 ## 🎮 Gameplay
 
