@@ -1,4 +1,3 @@
-````
 # 👽 Alien Clicker
 
 Alien Clicker is a fun, browser-based clicking game where the player must click on moving aliens while avoiding distractions like stars. The game is responsive and works on both desktop and mobile devices.
@@ -6,7 +5,6 @@ Alien Clicker is a fun, browser-based clicking game where the player must click 
 ---
 
 1.png
-
 
 ## 🎮 Gameplay
 
@@ -35,6 +33,7 @@ Alien Clicker is a fun, browser-based clicking game where the player must click 
    ```bash
    git clone https://github.com/yourusername/alien-clicker.git
    ```
+
 ````
 
 2. Open `index.html` in your browser.
@@ -86,7 +85,5 @@ alien-clicker/
 
 This project is for personal use only. All rights reserved by the creator.
 
-```
 
-
-```
+````
