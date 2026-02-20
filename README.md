@@ -1,4 +1,4 @@
-# 👽 Alien Clicker
+# 👽 Alien Clicker 🛸
 
 Alien Clicker is a fun, browser-based clicking game where the player must click on moving aliens while avoiding distractions like stars. The game is responsive and works on both desktop and mobile devices.
 
